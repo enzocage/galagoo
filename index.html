@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#05010f" />
+    <meta name="description" content="Galagoo is a hyper-polished, particle-heavy browser arcade shooter in a retro 80s cabinet." />
+    <link rel="icon" href="./images/Galaga_Fighter.png" type="image/png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles/game.css" />
+    <title>Galagoo: Neon Assault</title>
+  </head>
+  <body id="body" onload="MyGame.game.initialize();">
+    <div class="arcade-room" aria-hidden="true">
+      <span class="room-stars room-stars--one"></span>
+      <span class="room-stars room-stars--two"></span>
+      <span class="room-glow room-glow--cyan"></span>
+      <span class="room-glow room-glow--magenta"></span>
+      <span class="room-horizon"></span>
+      <span class="room-grid"></span>
+    </div>
+
+    <main class="cabinet-stage">
+      <section class="cabinet" aria-label="Galagoo arcade cabinet">
+        <a class="marquee" href="#" id="brand-home" aria-label="Return to main menu">
+          <span class="marquee-scanlines" aria-hidden="true"></span>
+          <span class="marquee-title">GALA<b>GOO</b></span>
+          <span class="marquee-sub">★ NEON ASSAULT ★</span>
+        </a>
+
+        <div class="cabinet-core">
+          <aside class="side-rail side-rail--left" aria-label="Cabinet scoreboard">
+            <div class="led">
+              <span class="led-label">Hi-Score</span>
+              <strong class="led-value" id="shell-high-score">000000</strong>
+            </div>
+            <div class="led">
+              <span class="led-label">Sector</span>
+              <strong class="led-value" id="shell-stage">01</strong>
+            </div>
+            <div class="led">
+              <span class="led-label">Hit-Rate</span>
+              <strong class="led-value" id="shell-accuracy">—</strong>
+            </div>
+            <span class="rail-spacer" aria-hidden="true"></span>
+            <button class="coin-slot" id="deck-coin" type="button" aria-label="Insert coin">
+              <span class="coin-slot-cut" aria-hidden="true"></span>
+              <span class="coin-slot-text">INSERT<br />COIN</span>
+            </button>
+          </aside>
+
+          <div class="crt-shell">
+            <div id="game" class="game-frame">
+              <div class="screen-noise" aria-hidden="true"></div>
+              <div class="screen-glass" aria-hidden="true"></div>
+
+              <section id="main-menu" class="screen" aria-labelledby="menu-title">
+                <div class="menu-hero">
+                  <span class="eyebrow">ALL WINGS REPORT IN</span>
+                  <div class="menu-wordmark" aria-label="Galagoo"><span>GALA</span><strong>GOO</strong></div>
+                  <h1 id="menu-title" class="sr-only">Galagoo — defend the galaxy</h1>
+                  <p class="menu-lede">CREDIT&nbsp;01&nbsp;·&nbsp;PUSH&nbsp;START</p>
+                </div>
+                <ul class="menu menu--primary">
+                  <li><button class="menu-button menu-button--primary" id="id-new-game" type="button"><span>Launch mission</span><b>01</b></button></li>
+                  <li><button class="menu-button" id="id-high-scores" type="button"><span>Hall of fame</span><b>02</b></button></li>
+                  <li><button class="menu-button" id="id-help" type="button"><span>Loadout &amp; controls</span><b>03</b></button></li>
+                  <li><button class="menu-button" id="id-about" type="button"><span>Transmission log</span><b>04</b></button></li>
+                </ul>
+                <div class="menu-footer"><span>&lt; &gt; MOVE</span><span>SPACE FIRE</span><span>P PAUSE</span></div>
+              </section>
+
+              <section id="game-play" class="screen screen--game" aria-label="Game play area">
+                <canvas id="id-canvas" class="canvas" width="1200" height="1600" tabindex="0" aria-label="Galagoo game canvas"></canvas>
+                <div id="pause-overlay" class="pause-overlay" hidden>
+                  <div class="pause-card" role="dialog" aria-modal="true" aria-labelledby="pause-title">
+                    <span class="eyebrow">FLIGHT COMPUTER</span>
+                    <h2 id="pause-title">Paused</h2>
+                    <p>The swarm is holding position.</p>
+                    <button id="id-resume-game" class="menu-button menu-button--primary" type="button"><span>Resume mission</span><b>P</b></button>
+                    <button id="id-exit-game" class="menu-button" type="button"><span>Abort to menu</span><b>ESC</b></button>
+                  </div>
+                </div>
+              </section>
+
+              <section id="high-scores" class="screen screen--panel" aria-labelledby="scores-title">
+                <header class="screen-header">
+                  <span class="eyebrow">PILOT ARCHIVE</span>
+                  <h1 id="scores-title">Hall of fame</h1>
+                  <p>Five pilots. One permanent transmission.</p>
+                </header>
+                <ol id="high-score-list" class="score-list" aria-label="Local high scores"></ol>
+                <ul class="menu menu--actions">
+                  <li><button id="id-high-scores-back" class="menu-button menu-button--primary" type="button"><span>Return</span><b>ESC</b></button></li>
+                  <li><button id="id-reset-high-scores" class="text-button" type="button">Clear local archive</button></li>
+                </ul>
+              </section>
+
+              <section id="help" class="screen screen--panel screen--scroll" aria-labelledby="options-title">
+                <header class="screen-header">
+                  <span class="eyebrow">FLIGHT CONFIGURATION</span>
+                  <h1 id="options-title">Loadout &amp; controls</h1>
+                  <p>Click a key to remap it. Changes are saved on this device.</p>
+                </header>
+
+                <div class="settings-grid">
+                  <div class="setting-group">
+                    <h2>Input map</h2>
+                    <div class="setting-row">
+                      <span><b>Move left</b><small>Strafe across the flight line</small></span>
+                      <button class="keybind" id="move-left-btn" type="button">A / ←</button>
+                    </div>
+                    <div class="setting-row">
+                      <span><b>Move right</b><small>Strafe across the flight line</small></span>
+                      <button class="keybind" id="move-right-btn" type="button">D / →</button>
+                    </div>
+                    <div class="setting-row">
+                      <span><b>Fire torpedo</b><small>Single press, single shot</small></span>
+                      <button class="keybind" id="fire-torpedo-btn" type="button">SPACE</button>
+                    </div>
+                  </div>
+
+                  <div class="setting-group">
+                    <h2>Arcade profile</h2>
+                    <label class="setting-row setting-row--control" for="torpedo-limit-toggle">
+                      <span><b>Classic shot limit</b><small>Maximum two friendly torpedoes</small></span>
+                      <span class="switch">
+                        <input type="checkbox" id="torpedo-limit-toggle" />
+                        <span class="slider" aria-hidden="true"></span>
+                      </span>
+                    </label>
+                    <label class="setting-row setting-row--stack" for="volume-control">
+                      <span><b>Sound FX level</b><small id="volume-value">55%</small></span>
+                      <input id="volume-control" class="range-control" type="range" min="0" max="100" value="55" />
+                    </label>
+                    <label class="setting-row setting-row--stack" for="music-volume-control">
+                      <span><b>80s music</b><small id="music-volume-value">15%</small></span>
+                      <input id="music-volume-control" class="range-control" type="range" min="0" max="100" value="15" />
+                    </label>
+                    <label class="setting-row setting-row--stack" for="voice-volume-control">
+                      <span><b>voice</b><small id="voice-volume-value">15%</small></span>
+                      <input id="voice-volume-control" class="range-control" type="range" min="0" max="100" value="15" />
+                    </label>
+                    <label class="setting-row setting-row--control" for="motion-toggle">
+                      <span><b>Reduce motion</b><small>Calmer interface effects</small></span>
+                      <span class="switch">
+                        <input type="checkbox" id="motion-toggle" />
+                        <span class="slider" aria-hidden="true"></span>
+                      </span>
+                    </label>
+                  </div>
+                </div>
+
+                <ul class="menu menu--actions menu--inline">
+                  <li><button id="id-help-back" class="menu-button menu-button--primary" type="button"><span>Save &amp; return</span><b>ESC</b></button></li>
+                  <li><button id="resetOptions" class="text-button" type="button">Restore defaults</button></li>
+                </ul>
+              </section>
+
+              <section id="about" class="screen screen--panel" aria-labelledby="credits-title">
+                <header class="screen-header">
+                  <span class="eyebrow">TRANSMISSION LOG</span>
+                  <h1 id="credits-title">Built for the love of arcade.</h1>
+                </header>
+                <div class="credits-card">
+                  <img src="images/Galaga_Fighter.png" alt="Galagoo fighter" />
+                  <p>Original browser recreation by <strong>Josh Williams</strong>.</p>
+                  <p>Interface, controls, accessibility, and gameplay polish upgraded for the modern web.</p>
+                  <div class="credit-divider"></div>
+                  <small>Inspired by Galaga, originally created by Namco. This educational fan project is not affiliated with or endorsed by Namco. Gameplay music streams from an external host.</small>
+                </div>
+                <ul class="menu menu--actions">
+                  <li><button id="id-about-back" class="menu-button menu-button--primary" type="button"><span>Return to command</span><b>ESC</b></button></li>
+                </ul>
+              </section>
+            </div>
+          </div>
+
+          <aside class="side-rail side-rail--right" aria-label="Cabinet controls">
+            <div class="service-row" aria-label="Game utilities">
+              <button class="icon-button" id="pause-toggle" type="button" aria-label="Pause game" title="Pause (P)">
+                <span aria-hidden="true">Ⅱ</span>
+              </button>
+              <button class="icon-button" id="audio-toggle" type="button" aria-label="Mute audio" aria-pressed="false" title="Toggle audio">
+                <span id="audio-icon" aria-hidden="true">♪</span>
+              </button>
+              <button class="icon-button" id="fullscreen-toggle" type="button" aria-label="Enter fullscreen" title="Fullscreen">
+                <span aria-hidden="true">⛶</span>
+              </button>
+            </div>
+            <span class="rail-spacer" aria-hidden="true"></span>
+            <div class="button-well">
+              <button id="deck-start" class="arcade-button arcade-button--start" type="button" aria-label="Start game"></button>
+              <span class="deck-label">START</span>
+            </div>
+            <div class="button-well">
+              <button id="deck-fire" class="arcade-button arcade-button--fire" type="button" aria-label="Fire torpedo"></button>
+              <span class="deck-label">FIRE</span>
+            </div>
+            <span class="rail-spacer" aria-hidden="true"></span>
+            <div class="joystick-well">
+              <div class="joystick" id="deck-joystick" aria-hidden="true">
+                <span class="joystick-arm">
+                  <span class="joystick-stick"></span>
+                  <span class="joystick-ball"></span>
+                </span>
+                <span class="joystick-base"></span>
+              </div>
+              <span class="deck-label">MOVE</span>
+            </div>
+          </aside>
+        </div>
+      </section>
+    </main>
+
+    <div id="mobile-controls" aria-label="Touch controls">
+      <label class="mobile-movement-wrap" for="mobile-movement">
+        <span>DRAG TO MOVE</span>
+        <input id="mobile-movement" type="range" min="0" max="100" value="50" aria-label="Move fighter left or right" />
+      </label>
+      <button id="mobile-fire" type="button" aria-label="Fire torpedo"><span>FIRE</span></button>
+    </div>
+
+    <div class="sr-only" id="game-announcer" aria-live="polite"></div>
+
+    <script>
+      let MyGame = {
+        screens: {},
+        input: {},
+        objects: {},
+        render: [],
+        ui: {}
+      };
+    </script>
+    <script src="scripts/systems/math.js"></script>
+    <script src="scripts/systems/saveOptions.js"></script>
+    <script src="scripts/systems/input-keyboard.js"></script>
+    <script src="scripts/update.js"></script>
+    <script src="scripts/render.js"></script>
+    <script src="scripts/systems/particles.js"></script>
+    <script src="scripts/systems/loadImages.js"></script>
+    <script src="scripts/systems/loadSounds.js"></script>
+    <script src="scripts/systems/pathing.js"></script>
+    <script src="scripts/stages.js"></script>
+    <script src="scripts/systems/savescores.js"></script>
+    <script src="scripts/pages/game.js"></script>
+    <script src="scripts/pages/mainmenu.js"></script>
+    <script src="scripts/pages/highscores.js"></script>
+    <script src="scripts/pages/help.js"></script>
+    <script src="scripts/pages/about.js"></script>
+    <script src="scripts/ui.js"></script>
+    <script src="scripts/gameplay.js"></script>
+  </body>
+</html>
