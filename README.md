@@ -1,5 +1,7 @@
 # Galagoo: Neon Assault
 
+## 🎮 [PLAY GAME HERE: https://enzocage.de/code/galagoo/](https://enzocage.de/code/galagoo/)
+
 A hyper-polished, particle-heavy HTML5 Canvas arcade shooter — a modern reimagining of the classic *Galaga* arcade experience, built with zero dependencies, zero build step, and a focus on visual spectacle, responsive input, and accessibility.
 
 ![Galagoo Arcade Cabinet](images/badge50.jpg)
