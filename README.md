@@ -28,15 +28,15 @@ A hyper-polished, particle-heavy HTML5 Canvas arcade shooter — a modern reimag
 
 | Screen | Description |
 |--------|-------------|
-| ![Main Menu](images/badge1.jpg) | **Main Menu** — Neon-drenched cabinet marquee, animated scanlines, floating wordmark, and four primary actions: Launch Mission, Hall of Fame, Loadout & Controls, Transmission Log. |
-| ![Gameplay](images/badge5.jpg) | **Gameplay** — 3:4 CRT playfield with three-layer parallax starfield (twinkling, speed trails, shooting stars), 260-particle budget with priority culling, additive glow rendering, screen shake, and real-time HUD. |
-| ![Boss Fight](images/badge10.jpg) | **Boss Encounter** — Multi-life boss ships with hit-flash particles, screen shake on hit, diving formations with escort scoring multipliers (1×/2×/4×). |
-| ![Challenge Stage](images/badge20.jpg) | **Challenging Stage** — Every 4th stage: fixed-pattern bee waves, bonus scoring, no diving, “RESULTS” screen with hit ratio calculation. |
+| ![Main Menu](images/Screenshot1.jpg) | **Main Menu** — Neon-drenched cabinet marquee, animated scanlines, floating wordmark, and four primary actions: Launch Mission, Hall of Fame, Loadout & Controls, Transmission Log. |
+| ![Gameplay](images/Screenshot2.jpg) | **Gameplay** — 3:4 CRT playfield with three-layer parallax starfield (twinkling, speed trails, shooting stars), 260-particle budget with priority culling, additive glow rendering, screen shake, and real-time HUD. |
+| ![Boss Fight](images/boss1.png) | **Boss Encounter** — Multi-life boss ships with hit-flash particles, screen shake on hit, diving formations with escort scoring multipliers (1×/2×/4×). |
+| ![Challenge Stage](images/badge20.jpg) | **Challenging Stage** — Every 4th stage: fixed-pattern bee waves, bonus scoring, no diving, "RESULTS" screen with hit ratio calculation. |
 | ![Pause Overlay](images/badge30.jpg) | **Pause Overlay** — Backdrop-blur modal, resume/abort actions, keyboard (P/Esc) and button accessible, music pauses/resumes correctly. |
 | ![High Scores](images/badge50.jpg) | **Hall of Fame** — LocalStorage top-5 leaderboard, pilot names, score formatting, clear-archive action with confirmation. |
 | ![Loadout & Controls](images/badge1.jpg) | **Loadout & Controls** — Remappable keybindings (left/right/fire), classic shot-limit toggle, volume slider, reduced-motion toggle, all persisted to localStorage. |
 
-> **Note:** Screenshots above use badge placeholder images from the game's asset collection. Run the game locally to see the actual visuals.
+> **Note:** The first two screenshots are actual game captures. Remaining images use in-game sprites/badges as visual references. Run the game locally to see the full experience.
 
 ---
 
